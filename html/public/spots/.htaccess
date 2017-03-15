@@ -1,0 +1,31 @@
+Options All -Indexes
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+)$ $1.php [L]
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/javascript text/css application/x-javascript
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4.0[678] no-gzip
+BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+Options +FollowSymLinks
+
+RewriteEngine On
+php_value max_execution_time 0
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+RewriteRule ^(.*)$ index.php [F,L]
+AddDefaultCharset utf-8
+php_flag display_errors off
+php_value max_execution_time 0
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 12 month"
+	ExpiresByType image/gif "access plus 12 months"
+    ExpiresByType image/jpeg "access plus 12 months"
+	ExpiresByType image/x-icon "access plus 12 months"
+	ExpiresByType image/png "access plus 12 months"
+</IfModule>
